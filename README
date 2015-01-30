@@ -1,0 +1,20 @@
+EXTRA UITLEG
+
+Enkele EXTERNE issues zorgen er voor dat enkele functies bij bepaalde liedjes niet werken. 
+
+ISSUES PER API
+
+	Q-MUSIC
+		- Geeft soms foute ID (te weinig karakters)
+		- Geeft soms geen ID
+		- Geeft soms 2 ID's
+
+
+	MusixMatch
+		- Geeft soms geen lyrics terug wegens auteurrechten 
+		- Heeft niet alles in databank
+
+	AlchemyAPI
+		- Geeft soms geen waarde terug na analyse tekst
+
+==> Alle errors worden wel opgevangen en de user wordt op de hoogte gebracht. (Bij een video error -> automatische page refresh)

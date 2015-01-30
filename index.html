@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Moodify</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400' rel='stylesheet' type='text/css'>
+<link rel="shortcut icon" href="http://q-music.be/sites/all/themes/custom/goldfinger/favicon.ico" type="image/vnd.microsoft.icon" />
+</head>
+<body>
+
+<!-- _____ HEADER MET LOGO _____ -->
+<header>
+	<a href="index.html"><img class="logo" src="images/logo.png"></a>
+	<div class="moodify">Moodify</div>
+</header>
+
+<!-- _____ CONTAINER 1: UITLEG WAT TE DOEN _____ -->
+<div class="container1" id="startAnim">
+		<p>You hear a song you like? </p>
+		<p id='animIn'> Click the  <img id='heartExplained pulse2' src='images/grey_heart.png'> below and find out your mood. </p>
+
+
+		<div class="scrollDown"><a id="smoothScroll" href="#nowPlayingTitle">V</a></div>
+</div>
+
+
+<!-- _____ NOW PLAYING + YOUTUBE VIDEO _____ -->
+<div class="container2">
+
+
+<div class="nowPlaying">
+	<div class="nowPlayingTitle" id="nowPlayingTitle">Now playing on Q</div>
+	<div id="songName"></div>
+</div>
+
+<div id="nextSong"></div>
+
+<input id="submit" class="heart" type="submit" value="">
+
+
+<div id="text">
+Mood: <div id="feeling">No song "loved" yet</div>
+</div>
+
+<div id="progressbar">
+  <div></div>
+</div>
+
+
+<div id="error"></div>
+<div id="youtubePlayer">
+	<div id="player"></div>
+</div>
+
+
+<div id="lyrics"></div>
+
+</div>
+
+<!-- _____ EXTRA INFORMATIE _____ -->
+<div class="container3">
+<div id="titleExtra"></div>
+<div id="bioArtist">
+	<div id="photoArtist"></div>
+	<div id="twitter"></div>
+	<div id="facebook"></div>
+	<div id="website"></div>
+
+	<div id="bio"></div>
+
+</div>
+
+</div>
+
+<!-- _____ UITLEG HOE HET WERKT _____ -->
+<div class="container4 brewing">
+	<p class="title">Whooah! How do you know my mood?!</p>
+	<p>
+		Well, we get the currently playing song from <a target="_blank" class="link" href="http://q-music.be/">Q-music</a>, <br>
+		Search the lyrics of that song via <a target="_blank" class="link" href="https://www.musixmatch.com/">MusixMatch</a>,<br>
+		Let <a target="_blank" class="link" href="http://www.alchemyapi.com/">AlchemyAPI</a> analyse the mood of the lyrics, <br>
+		and finaly brew a mixture of magic to find out your mood!
+	</p>
+
+	<!-- <p>Well, we use data from <a class="link" href="http://q-music.be/">Q-music</a>,<br>
+	put that data in <a class="link" href="https://www.musixmatch.com/">MusixMatch</a>,<br>
+	put the lyrics of the songs you like in <a class="link" href="http://www.alchemyapi.com/">AlchemyAPI</a><br>
+	and finaly brew a mixture of magic to find out your mood!</p> -->
+</div>
+
+
+
+
+<!-- _____ FOOTER _____ -->
+<footer>
+
+</footer>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="plugin/noframework.waypoints.min.js"></script>
+<script src="http://socket.api.q-music.be/js/q+sock.js"
+type="text/javascript"></script>
+<script src="js/base.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,339 @@
+body
+{
+	background-color:lightgray;
+	margin: 0;
+	padding: 0;
+	font-family: 'Century Gothic';
+}
+
+
+/*-------- HEADER --------  */
+
+header
+{
+	background-color: #F70E13;
+	padding: 2%;
+}
+
+.logo
+{
+	margin-left: 35%;
+	width: 30%;
+}
+
+.moodify
+{
+	text-align: center;
+	color: white;
+	font-size: 3em;
+	font-weight: bold;
+}
+
+.scrollDown
+{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	font-family: 'PT Sans', sans-serif;
+	font-weight: bold;
+
+	-webkit-animation-name: goDown;
+	-webkit-animation-duration: 1.5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-fill-mode: both;
+
+	-moz-animation-name: goDown;
+	-moz-animation-duration: 1.5s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+	-moz-animation-fill-mode: both;
+
+	-o-animation-name: goDown;
+	-o-animation-duration: 1.5s;
+	-o-animation-iteration-count: infinite;
+	-o-animation-timing-function: linear;
+	-o-animation-fill-mode: both;
+
+	animation-name: goDown;
+	animation-duration: 1.5s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	animation-fill-mode: both;
+}
+
+.scrollDown a
+{
+	text-decoration: none;
+	color: #F70E13;
+}
+
+
+@-moz-keyframes NAME-YOUR-ANIMATION {
+  0% { padding-top: 10px; }
+  50% { padding-top: 30px; }
+  70% {padding-top: 10px;}
+  80% {padding-top: 30px;}
+  90% {padding-top: 10px;}
+  100% { padding-top: 10px; }
+}
+@-o-keyframes goDown {
+  0% { padding-top: 10px; }
+  50% { padding-top: 30px; }
+  70% {padding-top: 10px;}
+  80% {padding-top: 30px;}
+  90% {padding-top: 10px;}
+  100% { padding-top: 10px; }
+}
+@keyframes goDown{
+  0% { padding-top: 10px; }
+  50% { padding-top: 30px; }
+  70% {padding-top: 10px;}
+  80% {padding-top: 30px;}
+  90% {padding-top: 10px;}
+  100% { padding-top: 10px; }
+}
+
+@-webkit-keyframes goDown
+{
+  0% { padding-top: 10px; }
+  50% { padding-top: 30px; }
+  70% {padding-top: 10px;}
+  80% {padding-top: 30px;}
+  90% {padding-top: 10px;}
+  100% { padding-top: 10px; }
+}
+
+
+/*--------- CONTAINER --------- */
+
+.container1
+{
+	padding: 8%;
+	font-size: 3em;
+	min-height: 250px;
+	background-color: #E3E3E3;
+	text-align: center;
+}
+
+.container2
+{
+	padding: 5%;
+	min-height: 500px;
+}
+
+.container3
+{
+	padding: 7%;
+	background-color: #E3E3E3;
+	min-height: 500px;
+}
+
+.container4
+{
+	padding: 7%;
+	
+}
+
+.nowPlaying
+{
+	text-align: center;
+}
+
+.nowPlayingTitle
+{
+	font-weight: bold;
+	font-size: 2.5em;
+}
+
+
+#youtubePlayer
+{
+	/*position: absolute;
+	left: 50%;
+	transform: translateX(-50%);*/
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#player
+{
+	width: 100%;
+}
+
+.brewing .title
+{
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.brewing
+{
+	font-size: 2.2em;
+	text-align: center;
+}
+
+.link
+{
+	text-decoration: none;
+	color:black;
+	font-weight: bold;
+}
+
+#sentiment
+{
+	text-align: center;
+}
+
+.heart
+{
+	margin-bottom: 20px;
+	display: block;
+	clear:both;
+	margin-left: auto;
+	margin-right: auto;
+	outline:none;
+	background-color: transparent;
+	width: 64px;
+	height: 64px;
+	border-style: none;
+	background-image: url("../images/grey_heart.png");
+	transition: all 0.2s ease;
+}
+
+.heart:hover
+{
+	background-image: url("../images/red_heart.png");
+}
+
+.clickedHeart
+{
+	margin-bottom: 20px;
+	display: block;
+	clear:both;
+	margin-left: auto;
+	margin-right: auto;
+	outline: none;
+	background-color: transparent;
+	width: 64px;
+	height: 64px;
+	border-style: none;
+	background-image: url("../images/red_heart.png");
+}
+
+#progressbar 
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2%;
+	width: 50%;
+ 	background-color: #C2C2C2;
+  	padding: 2px;
+}
+
+#progressbar > div 
+{
+   	height: 20px;
+}
+
+#text
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+  	padding: 3px;
+  	font-weight: bold;
+  	font-size: 2em;
+}
+
+#feeling
+{
+	display: inline-block;
+	color: red;
+  	font-weight: bold;
+  	font-size: -1em;
+}
+
+#error
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	width: 60%;
+  	padding: 3px;
+  	font-weight: bold;
+  	font-size: 1.2em;
+  	color:red;
+  	font-weight: bold;
+  	font-size: -1em;
+
+}
+
+#nowPlayingTitle
+{
+	color: white;
+	display: inline;
+	background-color: #F70E13;
+	padding: 10px;
+	font-weight: bold;
+}
+
+.bold
+{
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+#animIn
+{
+	margin-top: -30px;
+}
+
+#titleExtra
+{
+	font-size: 2.2em;
+	font-weight: bold;
+	text-align:center;
+}
+
+.artistNameExtra
+{
+	color: red;
+}
+
+#bioArtist
+{
+	text-align: center;
+	margin-top: 30px;
+}
+
+#photoArtist img
+{
+	float:left;
+	width: 400px;
+}
+
+#twitter img, #facebook img, #website img
+{
+	display: block;
+	width: 40px;
+	float:left;
+	margin-top: 20px;
+	margin-left: 15%;
+}
+
+#nextSong
+{
+	text-align: center;
+}
+
+/* ------------ FOOTER -------------*/
+
+footer
+{
+	background-color: #F70E13;
+	min-height: 200px;
+	padding: 2%;
+}
