@@ -126,7 +126,7 @@ header
 {
 	padding: 7%;
 	background-color: #E3E3E3;
-	min-height: 500px;
+	min-height: 600px;
 }
 
 .container4
@@ -324,9 +324,29 @@ header
 	margin-left: 15%;
 }
 
-#nextSong
+#nextSong 
 {
 	text-align: center;
+}
+
+#nextSong button
+{
+	text-decoration: none;
+	border-style: none;
+	color: white;
+	background-color: #F70E13;
+	padding: 5px;
+	font-weight: bold;
+}
+
+#nextSong button:hover
+{
+	background-color: #D60F13;
+}
+
+#country
+{
+	
 }
 
 /* ------------ FOOTER -------------*/

@@ -5,7 +5,6 @@ Enkele EXTERNE issues zorgen er voor dat enkele functies bij bepaalde liedjes ni
 ISSUES PER API
 
 	Q-MUSIC
-		- Geeft soms foute ID (te weinig karakters)
 		- Geeft soms geen ID
 		- Geeft soms 2 ID's
 

@@ -1,10 +1,7 @@
 // WANNEER HET DOCUMENT KLAAR IS, WORDT DE SONG OPGEVRAAGD
 $(document).ready(function()
 {
-
-	
 	SONG.getSong();
-
 
 	// LOCALSTORAGE WORDT TERUG OPGEHAALD
 	var totalSentiment = localStorage.getItem("totalSentiment");
@@ -17,19 +14,19 @@ $(document).ready(function()
 		$("#sentiment").empty().append(totalSentiment);
 	}
 
-  	// SONG.getSong(true);
-  	// SONG.refresh();
-  	setTimeout(function() {VIDEO.loadPlayer();},900);
+  	// setTimeout(function() {VIDEO.loadPlayer();},900);
 });
 
 
 // Als iemand LIKE klikt, worden de lyrics opgehaald
 $("#submit").on("click", function()
 {
-	$(this).delay(400).queue(function(){
-	$(this).addClass("clickedHeart");
-	$(this).dequeue();
+	$(this).delay(400).queue(function()
+	{
+		$(this).addClass("clickedHeart");
+		$(this).dequeue();
 	});
+
 	$("#submit").attr('disabled','disabled');
 	LYRICS.getArtistID();
 })
@@ -67,15 +64,16 @@ var SONG = (function (my, $)
 				.on("play", function(track, msg){
 					console.log(track);
 					
-					if(counter > 0) enableNext = true;
+					(counter > 0)? enableNext = true: VIDEO.loadPlayer();
 					counter++;
+
+
 					VIDEO.newSong(enableNext);
 					my.addToHTML(track);
 
 					artistID = track.youtube_id;
 					songName = track.title;
 					artistName = track.artist.name;
-
 				}, {backlog:1}
 			);
 		}
@@ -89,6 +87,7 @@ var SONG = (function (my, $)
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			
+
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
 			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
@@ -437,7 +436,7 @@ var VIDEO = (function (my, $)
 		if(event.data == 2) errorText = "Something went wrong, we're so sorry.";
 		if(event.data == 100 ) errorText = "The video requested was not found. We're sorry!";
 		if(event.data == 101 || event.data == 150) errorText = "The owner of the requested video does not allow it to be played in your country."
-		location.reload();
+		
 		error = true;
 
 	    $("#error").empty().append(errorText + " <br> We'll be automatically refreshing the page when a new song starts");
@@ -453,7 +452,7 @@ var VIDEO = (function (my, $)
 
 	  	console.log(enableNext);
 
-	  	if(enableNext) $("#nextSong").empty().append("<a href='javascript:location.href=location.href' id='next'>Next song > </a>");
+	  	if(enableNext) $("#nextSong").empty().append("<button onClick='location.reload()' id='next'>Next song > </a>").hide().fadeIn();
 
 	  }
 
