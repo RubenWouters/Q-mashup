@@ -34,6 +34,7 @@ $("#submit").on("click", function()
 	LYRICS.getArtistID();
 })
 
+
 // SMOOTH SCROLLING
 $('#smoothScroll').click(function(){
     $('html, body').animate({
@@ -56,37 +57,41 @@ var SONG = (function (my, $)
 		artistName,
 		getSong;
 
-		var $titleSong = $("#songName");
-
 		my.getSong = function()
 		{
-			var q = Q.connect('qmusic_be');
+			var q = Q.connect('qmusic_be'),
+				counter = 0
+				enableNext= false;
+
 			q.subscribe("plays")
 				.on("play", function(track, msg){
-					VIDEO.newSong();
-
 					console.log(track);
-					$("#nextSong").text("New song is playing on Q, click here to skip this song?");
+					
+					if(counter > 0) enableNext = true;
+					counter++;
+					VIDEO.newSong(enableNext);
 					my.addToHTML(track);
+
 					artistID = track.youtube_id;
 					songName = track.title;
 					artistName = track.artist.name;
+
 				}, {backlog:1}
 			);
 		}
 
 		my.addToHTML = function(track)
 		{
-			$titleSong.fadeOut().empty()
+			$("#songName").fadeOut().empty()
 				.append("<p class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</p>")
 				.fadeIn();
 
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			
-			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
-			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
-			if(track.artist.website != undefined) $("#website").empty().append("<a href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
+			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
+			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
+			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 		}
 
 	// DEZE FCTIES ZORGEN ERVOOR DAT DE LOKALE VARIABELEN TOCH BESCHIKBAAR ZIJN BUITEN DEZE SCOPE
@@ -439,19 +444,17 @@ var VIDEO = (function (my, $)
 	    console.log(event.data);
 	  }
 
-	  my.newSong = function()
+	  my.newSong = function(enableNext)
 	  {
 	  	if(error)
 	  	{
 	  		location.reload();
 	  	}
 
-	  	// console.log(player.getPlayerState());
+	  	console.log(enableNext);
 
-	  	// if(document.getelementById("player").getPlayerState() == 1)
-	  	// {
-	  	// 	console.log("still playing")
-	  	// }
+	  	if(enableNext) $("#nextSong").empty().append("<a href='javascript:location.href=location.href' id='next'>Next song > </a>");
+
 	  }
 
 	  function stopVideo() {
