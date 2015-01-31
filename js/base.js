@@ -49,16 +49,17 @@ var SONG = (function (my, $)
 {
 
 	// VARIABELEN
-	var artistID,
+	var q,
+		counter = 0,
+		enableNext = false,
+		artistID,
 		songName,
 		artistName,
 		getSong;
 
 		my.getSong = function()
 		{
-			var q = Q.connect('qmusic_be'),
-				counter = 0
-				enableNext= false;
+			q = Q.connect('qmusic_be');
 
 			q.subscribe("plays")
 				.on("play", function(track, msg){
@@ -87,8 +88,7 @@ var SONG = (function (my, $)
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			
-			if(track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
-
+			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
 			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
@@ -179,7 +179,8 @@ var SENTIMENT = (function (my, $)
 	var sentiment, 
 		getSentiment,
 		i = 0,
-		arSentiments = [];
+		arSentiments = [],
+		totalSentiment = 0;
 
 	my.getSentiment = function()
 	{
@@ -206,8 +207,6 @@ var SENTIMENT = (function (my, $)
 
 	my.addSentiment = function(sentiment)
 	{
-		var totalSentiment = 0;
-
 		if(localStorage.getItem("arSentiments") != null)
 		{
 			// DE LOCALSTORAGE GEEFT IPV DE ARRAY EEN STRING VERSIE TERUG, DUS MOET TERUG OMGEZET WORDEN
@@ -382,6 +381,9 @@ var SENTIMENT = (function (my, $)
 // YOUTUBE VIDEO OPHALEN VAN SONG 
 var VIDEO = (function (my, $)
 {	
+	var player,
+		newSong,
+		error = false;
 
 	my.loadPlayer = function() { 
 
@@ -397,10 +399,6 @@ var VIDEO = (function (my, $)
 	    };
 	  }
 	}
-
-	var player,
-		newSong,
-		error = false;
 
 	function onYouTubePlayer() {
 	  player = new YT.Player('player', {
