@@ -87,10 +87,12 @@ var SONG = (function (my, $)
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			
+			if(track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 
+			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
 			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
-			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
+			
 		}
 
 	// DEZE FCTIES ZORGEN ERVOOR DAT DE LOKALE VARIABELEN TOCH BESCHIKBAAR ZIJN BUITEN DEZE SCOPE
@@ -452,7 +454,7 @@ var VIDEO = (function (my, $)
 
 	  	console.log(enableNext);
 
-	  	if(enableNext) $("#nextSong").empty().append("<button onClick='location.reload()' id='next'>Next song > </a>").hide().fadeIn();
+	  	if(enableNext) $("#nextSong").empty().append("<button onClick='location.reload()' id='next'>Next song available > </a>").hide().fadeIn();
 
 	  }
 

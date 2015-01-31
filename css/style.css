@@ -181,6 +181,11 @@ header
 	font-weight: bold;
 }
 
+.center
+{
+	text-align: center;
+}
+
 #sentiment
 {
 	text-align: center;
@@ -303,26 +308,6 @@ header
 	color: red;
 }
 
-#bioArtist
-{
-	text-align: center;
-	margin-top: 30px;
-}
-
-#photoArtist img
-{
-	float:left;
-	width: 400px;
-}
-
-#twitter img, #facebook img, #website img
-{
-	display: block;
-	width: 40px;
-	float:left;
-	margin-top: 20px;
-	margin-left: 15%;
-}
 
 #nextSong 
 {
@@ -344,9 +329,43 @@ header
 	background-color: #D60F13;
 }
 
+#social
+{
+	clear:both;
+}
+
+#social img
+{
+	width: 40px;
+	margin-top: 2%;
+	margin-left: 10%;
+	margin-right: 2%;
+	float: right;
+}
+
+#photoArtist img
+{
+	margin-top: 2%;
+	width: 40%;
+	float:right;
+}
+
+#bioArtist
+{
+	padding-left: 5%;
+}
+
+#bio
+{
+	width: 50%;
+	background-color: red;
+}
+
 #country
 {
-	
+	margin-left: 10%;
+	padding-top: 5%;
+
 }
 
 /* ------------ FOOTER -------------*/
