@@ -2,7 +2,6 @@
 $(document).ready(function()
 {
 	SONG.getSong();
-
 	// LOCALSTORAGE WORDT TERUG OPGEHAALD
 	var totalSentiment = localStorage.getItem("totalSentiment");
 	var totalSentiment = parseInt(totalSentiment);
@@ -21,6 +20,7 @@ $(document).ready(function()
 // Als iemand LIKE klikt, worden de lyrics opgehaald
 $("#submit").on("click", function()
 {
+
 	$(this).delay(400).queue(function()
 	{
 		$(this).addClass("clickedHeart");
@@ -68,13 +68,13 @@ var SONG = (function (my, $)
 					(counter > 0)? enableNext = true: VIDEO.loadPlayer();
 					counter++;
 
-
-					VIDEO.newSong(enableNext);
-					my.addToHTML(track);
-
 					artistID = track.youtube_id;
 					songName = track.title;
 					artistName = track.artist.name;
+
+					VIDEO.newSong(enableNext);
+					my.addToHTML(track);
+					
 				}, {backlog:1}
 			);
 		}
@@ -87,11 +87,21 @@ var SONG = (function (my, $)
 
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
-			
+
+
 			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
 			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
+			if(track.artist.bio != undefined) $("#test").empty().append("<div class='bold'>Info</div>" + track.artist.bio )
+					.readmore({
+					  speed: 750,
+					  lessLink: '<a href="#">Show less</a>',
+					  moreLink: '<a href="#">Read more...</a>',
+					  blockCSS: 'display: inline-block; width: 100%;',
+					  collapsedHeight: 210
+					});
+
 			
 		}
 
@@ -111,6 +121,7 @@ var SONG = (function (my, $)
 
 	return my;
 }(SONG || {}, jQuery));
+
 
 // HAALT LYRICS OP
 var LYRICS = (function (my, $)

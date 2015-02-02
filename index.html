@@ -10,6 +10,7 @@
 </head>
 <body>
 
+
 <!-- _____ HEADER MET LOGO _____ -->
 <header>
 	<a href="index.html"><img class="logo" src="images/logo.png"></a>
@@ -28,14 +29,13 @@
 
 <!-- _____ NOW PLAYING + YOUTUBE VIDEO _____ -->
 <div class="container2">
-
+<div id="wait"></div>
 
 <div class="nowPlaying">
 	<div class="nowPlayingTitle" id="nowPlayingTitle">Now playing on Q</div>
-	<div id="songName"></div>
+	<div id="songName"><p class='bold'>  Loading song</p></div>
 </div>
 <div id="nextSong"></div>
-
 
 <input id="submit" class="heart" type="submit" value="">
 
@@ -64,20 +64,21 @@ Mood: <div id="feeling">No song "loved" yet</div>
 <div id="titleExtra"></div>
 
 
-<div id="bioArtist">
+<div id="bio">
+	<p><div id="country"></div></p>
+	<div id="test"></div>
+</div>
+
+<div id="social">
 	<div id="photoArtist"></div>
-	
-	<div id="bio">
-		<div id="country"></div>
-	</div>
-	
-	<div id="social">
+		
+	<div id="networks">
 		<div id="website"></div>
 		<div id="facebook"></div>
 		<div id="twitter"></div>
 	</div>
-	
 </div>
+
 	
 
 
@@ -100,17 +101,23 @@ Mood: <div id="feeling">No song "loved" yet</div>
 </div>
 
 
+<!-- _____ LOADING SCREEN _____ -->
+<!-- <div id="modal">
+	<p><img id="loading" src="images/loading.gif"></p>
+	<p> <div id="loadingText">Loading some awesome stuff, please wait!</div></p>
+
+</div> -->
 
 
 <!-- _____ FOOTER _____ -->
 <footer>
 
 </footer>
-
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-<script src="plugin/noframework.waypoints.min.js"></script>
 <script src="http://socket.api.q-music.be/js/q+sock.js"
 type="text/javascript"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="plugin/noframework.waypoints.min.js"></script>
+<script src="plugin/readmore.min.js"></script>
 <script src="js/base.js"></script>
 
 

@@ -329,43 +329,47 @@ header
 	background-color: #D60F13;
 }
 
-#social
-{
-	clear:both;
-}
-
-#social img
+#networks img
 {
 	width: 40px;
 	margin-top: 2%;
-	margin-left: 10%;
-	margin-right: 2%;
-	float: right;
+	margin-right: 15%;
+	float: left;
 }
 
 #photoArtist img
 {
 	margin-top: 2%;
 	width: 40%;
-	float:right;
 }
 
 #bioArtist
 {
+
 	padding-left: 5%;
 }
 
 #bio
 {
-	width: 50%;
+	float:right;
+	width: 40%;
 }
 
 #country
 {
-	margin-left: 10%;
 	padding-top: 5%;
-
 }
+
+#loading
+{
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: transparent;
+}
+
+
+
 
 /* ------------ FOOTER -------------*/
 
