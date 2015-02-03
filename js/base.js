@@ -260,8 +260,8 @@ var SENTIMENT = (function (my, $)
 		}
 		else
 		{
-			// console.log("Geen sentiment gevonden");
-			$("#error").text("We couldn't get hold of the emotion of this song, we're sorry.")
+			console.log("Geen sentiment gevonden");
+			// $("#error").text("We couldn't get hold of the emotion of this song, we're sorry.")
 		}
 	}
 
