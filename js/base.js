@@ -2,8 +2,8 @@
 $(document).ready(function()
 {
 	SONG.getSong();
-	// LOCALSTORAGE WORDT TERUG OPGEHAALD
-	var totalSentiment = localStorage.getItem("totalSentiment");
+	// SESSIONSTORAGE WORDT TERUG OPGEHAALD
+	var totalSentiment = sessionStorage.getItem("totalSentiment");
 	var totalSentiment = parseInt(totalSentiment);
 	SENTIMENT.changeMeter(totalSentiment);	
 
@@ -204,6 +204,14 @@ var SENTIMENT = (function (my, $)
 		  success: function(sentiment){
 	  		try
 	  		{
+	  			// VOOR ALS ER GEEN GETAL WORDT MEEGEGEVEN DOOR ALCHEMYAPI (EEN FOUT AAN HUN KANT)
+	  			if(sentiment.docSentiment.score == null && sentiment.docSentiment.type != null)
+	  			{
+	  				if(sentiment.docSentiment.type == "neutral") SENTIMENT.addSentiment(0); 
+	  				if(sentiment.docSentiment.type == "positive") SENTIMENT.addSentiment(10); 
+	  				if(sentiment.docSentiment.type == "negative") SENTIMENT.addSentiment(-10); 
+	  			}
+
 	  			sentiment = (sentiment.docSentiment.score * 10);
 		  		SENTIMENT.addSentiment(sentiment);
 	  		}
@@ -218,10 +226,10 @@ var SENTIMENT = (function (my, $)
 
 	my.addSentiment = function(sentiment)
 	{
-		if(localStorage.getItem("arSentiments") != null)
+		if(sessionStorage.getItem("arSentiments") != null)
 		{
-			// DE LOCALSTORAGE GEEFT IPV DE ARRAY EEN STRING VERSIE TERUG, DUS MOET TERUG OMGEZET WORDEN
-			arSentiments = localStorage.getItem("arSentiments").split(',').map(function(item) {
+			// DE SESSIONSTORAGE GEEFT IPV DE ARRAY EEN STRING VERSIE TERUG, DUS MOET TERUG OMGEZET WORDEN
+			arSentiments = sessionStorage.getItem("arSentiments").split(',').map(function(item) {
 		    	return parseInt(item, 10);
 			});	
 			// ANDERS OVERSCHRIJFT HET DE ARRAY TELKENS
@@ -243,8 +251,8 @@ var SENTIMENT = (function (my, $)
 			my.changeMeter(totalSentiment);
 
 			// SENTIMENT VALUE IN STORAGE STEKEN ZODAT HET NA REFRESH NOG TE BEREIKEN IS
-			localStorage.setItem("totalSentiment", totalSentiment);
-			localStorage.setItem("arSentiments", arSentiments);
+			sessionStorage.setItem("totalSentiment", totalSentiment);
+			sessionStorage.setItem("arSentiments", arSentiments);
 
 			console.log(arSentiments);
 			console.log("THIS SONG: " + sentiment);
@@ -252,7 +260,7 @@ var SENTIMENT = (function (my, $)
 		}
 		else
 		{
-			console.log("Geen sentiment gevonden");
+			// console.log("Geen sentiment gevonden");
 			$("#error").text("We couldn't get hold of the emotion of this song, we're sorry.")
 		}
 	}
