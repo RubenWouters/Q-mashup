@@ -4,12 +4,9 @@ $(document).ready(function()
 	SONG.getSong();
 
 	// SESSIONSTORAGE WORDT TERUG OPGEHAALD
-	if(sessionStorage.getItem("totalSentiment") != undefined  )
-	{
-		var totalSentiment = sessionStorage.getItem("totalSentiment");
-		totalSentiment = parseInt(totalSentiment);
-		SENTIMENT.changeMeter(totalSentiment);
-	}
+	var totalSentiment = sessionStorage.getItem("totalSentiment");
+	totalSentiment = parseInt(totalSentiment);
+	SENTIMENT.changeMeter(totalSentiment);
 });
 
 
@@ -67,7 +64,6 @@ var SONG = (function (my, $)
 				  		.slideDown();
 				  		enableNext = true;
 						VIDEO.newSong(enableNext);
-				  		
 					}
 					else
 					{
@@ -95,7 +91,7 @@ var SONG = (function (my, $)
 				.fadeIn();
 			
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
-			
+
 			if(track.artist.photo  != undefined) $("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
