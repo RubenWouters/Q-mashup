@@ -45,8 +45,8 @@ var SONG = (function (my, $)
 	// VARIABELEN
 	var q,
 		counter = 0,
-		enableNext = false,
 		artistID,
+		enableNext = false,
 		songName,
 		artistName;
 
@@ -58,16 +58,30 @@ var SONG = (function (my, $)
 				{	
 					// ALS HET VOLGENDE LIEDJE BESCHIKBAAR IS MAG DIT INDIEN DE GEBRUIKER HET WENST GELADEN WORDEN
 					// ANDERS (ALS HET LIEDJE VOOR DE 1E KEER GELADEN WORDT, MOET DE VIDEO GELADEN WORDEN)
-					(counter > 0)? enableNext = true: VIDEO.loadPlayer();
+					if(counter > 0)
+					{
+						$("#nextSong")
+				  		.empty()
+				  		.append("<button onClick='location.reload()' id='next'>Next song available > <br>"+ "<span class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</span>" +"</a>")
+				  		.hide()
+				  		.slideDown();
+				  		enableNext = true;
+						VIDEO.newSong(enableNext);
+				  		
+					}
+					else
+					{
+						addToHTML(track);
+						VIDEO.loadPlayer();
+					}
 					counter++;
 
 					artistID = track.youtube_id;
 					songName = track.title;
 					artistName = track.artist.name;
 
-					VIDEO.newSong(enableNext);
-					addToHTML(track);
-
+					
+					
 				}, {backlog:1}
 			);
 		}
@@ -79,10 +93,10 @@ var SONG = (function (my, $)
 				.empty()
 				.append("<p class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</p>")
 				.fadeIn();
-
+			
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
-			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
-
+			
+			if(track.artist.photo  != undefined) $("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
@@ -440,17 +454,12 @@ var VIDEO = (function (my, $)
 	    $("#error").empty().append(errorText + " <br> We'll be automatically refreshing the page when a new song starts");
 	  }
 
-	  my.newSong = function(enableNext)
+	  my.newSong = function()
 	  {
 	  	if(error)
 	  	{
 	  		location.reload();
 	  	}
-	  	if(enableNext) $("#nextSong")
-	  		.empty()
-	  		.append("<button onClick='location.reload()' id='next'>Next song available > </a>")
-	  		.hide()
-	  		.fadeIn();
 	  }
 
 	  function stopVideo() {
