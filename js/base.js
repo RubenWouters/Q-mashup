@@ -2,32 +2,27 @@
 $(document).ready(function()
 {
 	SONG.getSong();
+
 	// SESSIONSTORAGE WORDT TERUG OPGEHAALD
-	var totalSentiment = sessionStorage.getItem("totalSentiment");
-	var totalSentiment = parseInt(totalSentiment);
-	SENTIMENT.changeMeter(totalSentiment);	
-
-	// INDIEN ER IETS IN DE STORAGE ZIT, OPVULLEN!
-	if(totalSentiment != null)
+	if(sessionStorage.getItem("totalSentiment") != undefined  )
 	{
-		$("#sentiment").empty().append(totalSentiment);
+		var totalSentiment = sessionStorage.getItem("totalSentiment");
+		totalSentiment = parseInt(totalSentiment);
+		SENTIMENT.changeMeter(totalSentiment);
 	}
-
-  	// setTimeout(function() {VIDEO.loadPlayer();},900);
 });
 
 
-// Als iemand LIKE klikt, worden de lyrics opgehaald
+// Als iemand op de Love-button klikt, worden de lyrics opgehaald
 $("#submit").on("click", function()
 {
-
 	$(this).delay(400).queue(function()
 	{
 		$(this).addClass("clickedHeart");
 		$(this).dequeue();
 	});
-
 	$("#submit").attr('disabled','disabled');
+
 	LYRICS.getArtistID();
 })
 
@@ -44,27 +39,25 @@ $('#smoothScroll').click(function(){
 // _______________________________________ MODULES _______________________________________
 
 
-// HAALT SONG OP
+// _____ HAALT SONG OP _____
 var SONG = (function (my, $)
 {
-
 	// VARIABELEN
 	var q,
 		counter = 0,
 		enableNext = false,
 		artistID,
 		songName,
-		artistName,
-		getSong;
+		artistName;
 
 		my.getSong = function()
 		{
 			q = Q.connect('qmusic_be');
-
 			q.subscribe("plays")
-				.on("play", function(track, msg){
-					console.log(track);
-					
+				.on("play", function(track, msg)
+				{	
+					// ALS HET VOLGENDE LIEDJE BESCHIKBAAR IS MAG DIT INDIEN DE GEBRUIKER HET WENST GELADEN WORDEN
+					// ANDERS (ALS HET LIEDJE VOOR DE 1E KEER GELADEN WORDT, MOET DE VIDEO GELADEN WORDEN)
 					(counter > 0)? enableNext = true: VIDEO.loadPlayer();
 					counter++;
 
@@ -73,36 +66,35 @@ var SONG = (function (my, $)
 					artistName = track.artist.name;
 
 					VIDEO.newSong(enableNext);
-					my.addToHTML(track);
-					
+					addToHTML(track);
+
 				}, {backlog:1}
 			);
 		}
 
-		my.addToHTML = function(track)
+		addToHTML = function(track)
 		{
-			$("#songName").fadeOut().empty()
+			$("#songName")
+				.fadeOut()
+				.empty()
 				.append("<p class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</p>")
 				.fadeIn();
 
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
 			$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
 
-
 			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
 			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
 			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
 			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
-			if(track.artist.bio != undefined) $("#test").empty().append("<div class='bold'>Info</div>" + track.artist.bio )
+			if(track.artist.bio != undefined) $("#test").empty().append("<div class='bold'>Info</div>" + track.artist.bio)
 					.readmore({
 					  speed: 750,
-					  lessLink: '<a href="#">Show less</a>',
-					  moreLink: '<a href="#">Read more...</a>',
+					  lessLink: '<a class="lessIsMore bold" href="#">Show less ^</a>',
+					  moreLink: '<a class="lessIsMore bold" href="#">Read more v</a>',
 					  blockCSS: 'display: inline-block; width: 100%;',
 					  collapsedHeight: 210
 					});
-
-			
 		}
 
 	// DEZE FCTIES ZORGEN ERVOOR DAT DE LOKALE VARIABELEN TOCH BESCHIKBAAR ZIJN BUITEN DEZE SCOPE
@@ -122,22 +114,19 @@ var SONG = (function (my, $)
 	return my;
 }(SONG || {}, jQuery));
 
-
-// HAALT LYRICS OP
+// _____ HAALT LYRICS OP _____
 var LYRICS = (function (my, $)
 {
 	var trackID, 
 		prepedText,
 		preparedSongName,
-		preparedArtistName,
-		getArtistID,
-		getLyricsByID;
+		getArtistID;
 
 	// HAALT HET ID OP VAN DE SONG
 	my.getArtistID = function()
 	{
+		// ALLE SPATIES MOETEN UIT DE NAMEN OP DE API TE LATEN WERKEN
 		preparedSongName = (SONG.getSongName()).replace(/\s/g,"%20");
-		preparedArtistName = (SONG.getArtistName()).replace(/\s/g,"%20");
 
 		$.ajax({
 		    dataType: "jsonp",
@@ -184,7 +173,7 @@ var LYRICS = (function (my, $)
 	return my;
 }(LYRICS || {}, jQuery));
 
-// VERWERKT LYRICS 
+// _____ VERWERKT LYRICS _____
 var SENTIMENT = (function (my, $)
 {
 	var sentiment, 
@@ -207,13 +196,13 @@ var SENTIMENT = (function (my, $)
 	  			// VOOR ALS ER GEEN GETAL WORDT MEEGEGEVEN DOOR ALCHEMYAPI (EEN FOUT AAN HUN KANT)
 	  			if(sentiment.docSentiment.score == null && sentiment.docSentiment.type != null)
 	  			{
-	  				if(sentiment.docSentiment.type == "neutral") SENTIMENT.addSentiment(0); 
-	  				if(sentiment.docSentiment.type == "positive") SENTIMENT.addSentiment(10); 
-	  				if(sentiment.docSentiment.type == "negative") SENTIMENT.addSentiment(-10); 
+	  				if(sentiment.docSentiment.type == "neutral") addSentiment(0); 
+	  				if(sentiment.docSentiment.type == "positive") addSentiment(10); 
+	  				if(sentiment.docSentiment.type == "negative") addSentiment(-10); 
 	  			}
 
-	  			sentiment = (sentiment.docSentiment.score * 10);
-		  		SENTIMENT.addSentiment(sentiment);
+	  			sentiment = Math.ceil((sentiment.docSentiment.score * 10));
+		  		addSentiment(sentiment);
 	  		}
 	  		catch(error)
 	  		{
@@ -223,8 +212,7 @@ var SENTIMENT = (function (my, $)
 		});
 	}
 
-
-	my.addSentiment = function(sentiment)
+	addSentiment = function(sentiment)
 	{
 		if(sessionStorage.getItem("arSentiments") != null)
 		{
@@ -245,9 +233,6 @@ var SENTIMENT = (function (my, $)
 				totalSentiment += arSentiments[j];
 			};
 			totalSentiment = Math.ceil((totalSentiment/arSentiments.length));
-			
-			$("#sentiment").empty().append(totalSentiment);
-
 			my.changeMeter(totalSentiment);
 
 			// SENTIMENT VALUE IN STORAGE STEKEN ZODAT HET NA REFRESH NOG TE BEREIKEN IS
@@ -256,12 +241,7 @@ var SENTIMENT = (function (my, $)
 
 			console.log(arSentiments);
 			console.log("THIS SONG: " + sentiment);
-			console.log(totalSentiment);
-		}
-		else
-		{
-			console.log("Geen sentiment gevonden");
-			// $("#error").text("We couldn't get hold of the emotion of this song, we're sorry.")
+			console.log("AVERAGE SENTIMENT: " + totalSentiment);
 		}
 	}
 
@@ -397,7 +377,7 @@ var SENTIMENT = (function (my, $)
 	return my;
 }(SENTIMENT || {}, jQuery));
 
-// YOUTUBE VIDEO OPHALEN VAN SONG 
+// _____ YOUTUBE VIDEO OPHALEN VAN SONG _____
 var VIDEO = (function (my, $)
 {	
 	var player,
@@ -451,7 +431,6 @@ var VIDEO = (function (my, $)
 	  }
 	  function catchError(event)
 	  {
-
 		if(event.data == 2) errorText = "Something went wrong, we're so sorry.";
 		if(event.data == 100 ) errorText = "The video requested was not found. We're sorry!";
 		if(event.data == 101 || event.data == 150) errorText = "The owner of the requested video does not allow it to be played in your country."
@@ -459,7 +438,6 @@ var VIDEO = (function (my, $)
 		error = true;
 
 	    $("#error").empty().append(errorText + " <br> We'll be automatically refreshing the page when a new song starts");
-	    console.log(event.data);
 	  }
 
 	  my.newSong = function(enableNext)
@@ -468,16 +446,16 @@ var VIDEO = (function (my, $)
 	  	{
 	  		location.reload();
 	  	}
-
-	  	console.log(enableNext);
-
-	  	if(enableNext) $("#nextSong").empty().append("<button onClick='location.reload()' id='next'>Next song available > </a>").hide().fadeIn();
-
+	  	if(enableNext) $("#nextSong")
+	  		.empty()
+	  		.append("<button onClick='location.reload()' id='next'>Next song available > </a>")
+	  		.hide()
+	  		.fadeIn();
 	  }
 
 	  function stopVideo() {
 	    player.stopVideo();
 	  }
 		  
-		  return my;
+	return my;
 }(VIDEO || {}, jQuery));
