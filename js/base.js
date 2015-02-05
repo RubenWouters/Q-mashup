@@ -39,13 +39,18 @@ $('#smoothScroll').click(function(){
 // _____ HAALT SONG OP _____
 var SONG = (function (my, $)
 {
-	// VARIABELEN
+	// PRIVATE VARIABELEN
 	var q,
 		counter = 0,
 		artistID,
 		enableNext = false,
 		songName,
 		artistName;
+
+	//PUBLIEKE VARIABELEN
+	my.artistID;
+	my.songName;
+	my.artistName;
 
 		my.getSong = function()
 		{
@@ -72,9 +77,9 @@ var SONG = (function (my, $)
 					}
 					counter++;
 
-					artistID = track.youtube_id;
-					songName = track.title;
-					artistName = track.artist.name;
+					my.artistID = track.youtube_id;
+					my.songName = track.title;
+					my.artistName = track.artist.name;
 
 					
 					
@@ -107,19 +112,7 @@ var SONG = (function (my, $)
 					});
 		}
 
-	// DEZE FCTIES ZORGEN ERVOOR DAT DE LOKALE VARIABELEN TOCH BESCHIKBAAR ZIJN BUITEN DEZE SCOPE
-	my.getArtistId = function()
-	{
-		return artistID;
-	}
-	my.getSongName = function()
-	{
-		return songName;
-	}
-	my.getArtistName = function()
-	{
-		return artistName;
-	}
+	
 
 	return my;
 }(SONG || {}, jQuery));
@@ -128,15 +121,17 @@ var SONG = (function (my, $)
 var LYRICS = (function (my, $)
 {
 	var trackID, 
-		prepedText,
 		preparedSongName,
 		getArtistID;
+
+	//PUBLIEKE VARIABELE
+	my.prepedText;
 
 	// HAALT HET ID OP VAN DE SONG
 	my.getArtistID = function()
 	{
 		// ALLE SPATIES MOETEN UIT DE NAMEN OP DE API TE LATEN WERKEN
-		preparedSongName = (SONG.getSongName()).replace(/\s/g,"%20");
+		preparedSongName = (SONG.songName).replace(/\s/g,"%20");
 
 		$.ajax({
 		    dataType: "jsonp",
@@ -162,7 +157,7 @@ var LYRICS = (function (my, $)
 			    	{
 			    		text = lyrics.message.body.lyrics.lyrics_body;
 				    	textWithoutEnter = text.replace(/(?:\r\n|\r|\n)/g, ' ');
-				    	prepedText = textWithoutEnter.replace('...  ******* This Lyrics is NOT for Commercial use *******','');
+				    	my.prepedText = textWithoutEnter.replace('...  ******* This Lyrics is NOT for Commercial use *******','');
 				    	
 				    	SENTIMENT.getSentiment();
 			    	}
@@ -173,11 +168,6 @@ var LYRICS = (function (my, $)
 			    }})
 		    }
 		})
-	}
-
-	my.getPrepedText = function()
-	{
-		return prepedText;
 	}
 
 	return my;
@@ -199,7 +189,7 @@ var SENTIMENT = (function (my, $)
 		  dataType: 'jsonp',
 		  jsonp: 'jsonp',
 		  type: "post",
-		  data: { apikey: '9e017e7c37119e13db9942376d5dafa77a9c4c69', text: LYRICS.getPrepedText(), outputMode: 'json' },
+		  data: { apikey: '9e017e7c37119e13db9942376d5dafa77a9c4c69', text: LYRICS.prepedText, outputMode: 'json' },
 		  success: function(sentiment){
 	  		try
 	  		{
@@ -413,7 +403,7 @@ var VIDEO = (function (my, $)
 	  player = new YT.Player('player', {
 	    height: '490',
 	    width: '890',
-	    videoId: SONG.getArtistId(),
+	    videoId: SONG.artistID,
 	    playerVars: { controls:0, showinfo: 0, rel: 0, showsearch: 0, iv_load_policy: 3 },
 	    events: {
 			'onReady': onPlayerReady,
