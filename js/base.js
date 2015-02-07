@@ -25,6 +25,7 @@ $("#submit").on("click", function()
 
 
 // SMOOTH SCROLLING
+// GEEN EIGEN CODE, CODE VAN SMOOTH SCROLLING PLUGIN
 $('#smoothScroll').click(function(){
     $('html, body').animate({
         scrollTop: $( $(this).attr('href') ).offset().top
@@ -39,90 +40,98 @@ $('#smoothScroll').click(function(){
 // _____ HAALT SONG OP _____
 var SONG = (function (my, $)
 {
-	// PRIVATE VARIABELEN
-	var q,
-		counter = 0,
-		artistID,
-		enableNext = false,
-		songName,
-		artistName;
+	var getSong,
+		addToHTML;
 
-	//PUBLIEKE VARIABELEN
-	my.artistID;
-	my.songName;
-	my.artistName;
+	my.getSong = function()
+	{
+		// PRIVATE VARIABELEN
+		var q,
+			counter = 0;
 
-		my.getSong = function()
-		{
-			q = Q.connect('qmusic_be');
-			q.subscribe("plays")
-				.on("play", function(track, msg)
-				{	
-					// ALS HET VOLGENDE LIEDJE BESCHIKBAAR IS MAG DIT INDIEN DE GEBRUIKER HET WENST GELADEN WORDEN
-					// ANDERS (ALS HET LIEDJE VOOR DE 1E KEER GELADEN WORDT, MOET DE VIDEO GELADEN WORDEN)
-					if(counter > 0)
-					{
-						$("#nextSong")
+		// Q-MUSIC CODE VOOR WEBSOCKET 	
+		q = Q.connect('qmusic_be');
+		q.subscribe("plays")
+			.on("play", function(track, msg)
+			{	
+				// ALS HET VOLGENDE LIEDJE BESCHIKBAAR IS, MAG DIT INDIEN DE GEBRUIKER HET WENST GELADEN WORDEN
+				// ANDERS (ALS HET LIEDJE VOOR DE 1E KEER GELADEN WORDT, MOET DE VIDEO GELADEN WORDEN)
+				if(counter > 0)
+				{
+					$("#nextSong")
 				  		.empty()
-				  		.append("<button onClick='location.reload()' id='next'>Next song available > <br>"+ "<span class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</span>" +"</a>")
+				  		.append("<button onClick='location.reload()' id='next'> Next song available > <br>"+ "<span class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</span></a>")
 				  		.hide()
 				  		.slideDown();
-				  		enableNext = true;
-						VIDEO.newSong(enableNext);
-					}
-					else
-					{
-						addToHTML(track);
-						VIDEO.loadPlayer();
-					}
-					counter++;
 
-					my.artistID = track.youtube_id;
-					my.songName = track.title;
-					my.artistName = track.artist.name;
+					VIDEO.newSong();
+				}
+				else
+				{
+					addToHTML(track);
+					VIDEO.loadPlayer();
+				}
+				counter++;
 
-					
-					
-				}, {backlog:1}
-			);
+				my.artistID = track.youtube_id;
+				my.songName = track.title;
+
+			}, {backlog:1});
 		}
 
 		addToHTML = function(track)
 		{
+			// SONGNAME EN ARTIEST WEERGEVEN 
 			$("#songName")
 				.fadeOut()
 				.empty()
 				.append("<p class='bold'> " +  track.artist.name +  " -  " +    track.title +  "</p>")
 				.fadeIn();
 			
+			// AANGEVEN OVER WIE DE EXTRA INFORMATIE IS
 			$("#titleExtra").empty().append("Social corner of <span class='artistNameExtra'>" + track.artist.name + "</span>");
-
-			if(track.artist.photo  != undefined) $("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" );
-			if(track.artist.country != undefined && track.artist.country.name != undefined) $("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name);
-			if(track.artist.website != undefined) $("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
-			if(track.artist.twitter_url != undefined) $("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
-			if(track.artist.facebook_url != undefined) $("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
-			if(track.artist.bio != undefined) $("#test").empty().append("<div class='bold'>Info</div>" + track.artist.bio)
-					.readmore({
+			
+			// LINKS NAAR SOCIAL MEDIA (ALS ZE HET HEBBEN)
+			if(track.artist.website != undefined) 
+				$("#website").empty().append("<a target='_blank' href='" + track.artist.website + "'>" + "<img src='images/website.png'>" + "</a>");
+			if(track.artist.twitter_url != undefined) 
+				$("#twitter").empty().append("<a target='_blank' href='" + track.artist.twitter_url + "'>" + "<img src='images/twitter.png'>" + "</a>");
+			if(track.artist.facebook_url != undefined) 
+				$("#facebook").empty().append("<a target='_blank' href='" + track.artist.facebook_url + "'>" + "<img src='images/facebook.png'>" + "</a>");
+			
+			// FOTO EN LAND WEERGEVEN ALS HET TER BESCHIKKING IS
+			(track.artist.photo  != undefined)? 
+				$("#photoArtist").empty().append("<img src='http://images.q-music.be" + track.artist.photo + "'>" ) : $("#photoArtist").empty().append("No photo available");
+			(track.artist.country != undefined && track.artist.country.name != undefined)?
+				$("#country").empty().append("<div class='bold'>Country</div>" + track.artist.country.name) : $("#country").empty().append("No country available!");
+			
+			// EXTRA INFORMATIE (VAN Q-MUSIC) WEERGEVEN (MET READMORE PLUGIN DIE TE LANGE TEKST INKORT MET EEN UITSCHUIFBARE OPTIE)
+			(track.artist.bio != undefined)? $("#artistInformation").empty().append("<div class='bold'>Info</div>" + track.artist.bio)
+					.readmore({ // Readmore is een plugin 
 					  speed: 750,
 					  lessLink: '<a class="lessIsMore bold" href="#">Show less ^</a>',
 					  moreLink: '<a class="lessIsMore bold" href="#">Read more v</a>',
 					  blockCSS: 'display: inline-block; width: 100%;',
 					  collapsedHeight: 210
-					});
+					}) : $("#artistInformation").empty().append("No information available");
 		}
-
-	
 
 	return my;
 }(SONG || {}, jQuery));
 
+
+
+
+
+
+
+
 // _____ HAALT LYRICS OP _____
+// - Geeft soms geen lyrics terug wegens auteurrechten 
+// - Heeft niet alles in databank
 var LYRICS = (function (my, $)
 {
-	var trackID, 
-		preparedSongName,
-		getArtistID;
+	var getArtistID;
 
 	//PUBLIEKE VARIABELE
 	my.prepedText;
@@ -130,6 +139,9 @@ var LYRICS = (function (my, $)
 	// HAALT HET ID OP VAN DE SONG
 	my.getArtistID = function()
 	{
+		var trackID, 
+			preparedSongName;
+
 		// ALLE SPATIES MOETEN UIT DE NAMEN OP DE API TE LATEN WERKEN
 		preparedSongName = (SONG.songName).replace(/\s/g,"%20");
 
@@ -173,20 +185,24 @@ var LYRICS = (function (my, $)
 	return my;
 }(LYRICS || {}, jQuery));
 
+
+
+
+
+
+
+
 // _____ VERWERKT LYRICS _____
+// - Geeft soms geen waarde terug na analyse tekst
 var SENTIMENT = (function (my, $)
 {
-	var sentiment, 
-		getSentiment,
-		i = 0,
-		arSentiments = [],
-		totalSentiment = 0;
-
+	var getSentiment,
+		addSentiment;
+		
 	my.getSentiment = function()
 	{
 		$.ajax({
 		  url: 'https://access.alchemyapi.com/calls/text/TextGetTextSentiment',
-		  dataType: 'jsonp',
 		  jsonp: 'jsonp',
 		  type: "post",
 		  data: { apikey: '9e017e7c37119e13db9942376d5dafa77a9c4c69', text: LYRICS.prepedText, outputMode: 'json' },
@@ -214,6 +230,10 @@ var SENTIMENT = (function (my, $)
 
 	addSentiment = function(sentiment)
 	{
+		var i = 0,
+			arSentiments = [],
+			totalSentiment = 0;
+
 		if(sessionStorage.getItem("arSentiments") != null)
 		{
 			// DE SESSIONSTORAGE GEEFT IPV DE ARRAY EEN STRING VERSIE TERUG, DUS MOET TERUG OMGEZET WORDEN
@@ -223,6 +243,7 @@ var SENTIMENT = (function (my, $)
 			// ANDERS OVERSCHRIJFT HET DE ARRAY TELKENS
 			i = arSentiments.length;
 		}
+
 		if(! isNaN(sentiment))
 		{
 			arSentiments[i] = sentiment;
@@ -238,10 +259,6 @@ var SENTIMENT = (function (my, $)
 			// SENTIMENT VALUE IN STORAGE STEKEN ZODAT HET NA REFRESH NOG TE BEREIKEN IS
 			sessionStorage.setItem("totalSentiment", totalSentiment);
 			sessionStorage.setItem("arSentiments", arSentiments);
-
-			console.log(arSentiments);
-			console.log("THIS SONG: " + sentiment);
-			console.log("AVERAGE SENTIMENT: " + totalSentiment);
 		}
 	}
 
@@ -361,7 +378,7 @@ var SENTIMENT = (function (my, $)
 				break;
 		}
 
-
+		// VERANDERT PROGRESS BAR
 		$("#feeling").text(text);
 		$("#feeling").css('color', color);
 		$("#progressbar > div ").css({
@@ -377,7 +394,14 @@ var SENTIMENT = (function (my, $)
 	return my;
 }(SENTIMENT || {}, jQuery));
 
+
+
+
+
+
+
 // _____ YOUTUBE VIDEO OPHALEN VAN SONG _____
+// GEEN EIGEN CODE (ENKEL NEWSONG FUNCTIE), CODE IS VAN YOUTUBE API
 var VIDEO = (function (my, $)
 {	
 	var player,

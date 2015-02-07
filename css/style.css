@@ -150,9 +150,6 @@ header
 
 #youtubePlayer
 {
-	/*position: absolute;
-	left: 50%;
-	transform: translateX(-50%);*/
 	width: 75%;
 	margin-left: auto;
 	margin-right: auto;
@@ -205,6 +202,9 @@ header
 	height: 64px;
 	border-style: none;
 	background-image: url("../images/grey_heart.png");
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 }
 
@@ -367,8 +367,11 @@ header
 {
 	position: absolute;
 	left: 50%;
-	transform: translateX(-50%);
 	background-color: transparent;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
 }
 
 .lessIsMore
