@@ -1,3 +1,7 @@
+// RUBEN WOUTERS
+// MTA WEBb
+// IK WENS GRAAG DEEL TE NEMEN AAN DE WEDSTRIJD VAN Q-MUSIC
+
 // WANNEER HET DOCUMENT KLAAR IS, WORDT DE SONG OPGEVRAAGD
 $(document).ready(function()
 {
@@ -132,9 +136,6 @@ var SONG = (function (my, $)
 var LYRICS = (function (my, $)
 {
 	var getArtistID;
-
-	//PUBLIEKE VARIABELE
-	my.prepedText;
 
 	// HAALT HET ID OP VAN DE SONG
 	my.getArtistID = function()
